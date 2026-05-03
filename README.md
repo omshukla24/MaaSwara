@@ -93,7 +93,7 @@ graph TD
 
     subgraph "Data Persistence & Spatial Routing"
         K[(Supabase PostgreSQL <br/>'alerts' Table)]:::db
-        L[PostGIS Spatial Match <br/>Nearest Clinic Routing]:::db
+        L[Haversine Spatial Match <br/>Nearest Clinic Routing]:::db
         M[Supabase Realtime <br/>WebSocket Pub/Sub]:::db
     end
 
@@ -157,7 +157,7 @@ MaaSwara's medical logic is not improvised; it is strictly grounded in establish
 |---|---|---|
 | **Clinical Triage Logic** | *WHO Recommendations on Antenatal Care (2022)* | Hardcoded directly into the Gemini System Prompt context window. |
 | **Danger Signs (11 Triggers)** | *JHPIEGO Maternal Health Manual* | 11 deterministic regex triggers that mathematically override the LLM. |
-| **Partner Clinics** | *Synthetic PostGIS Seed Data* | Geofenced coordinates covering India, East Africa, and West Africa. |
+| **Partner Clinics** | *Synthetic Geolocation Seed Data* | Geofenced coordinates covering India, East Africa, and West Africa. |
 | **Patient Record/Alerts** | *Synthetic FHIR-compliant Data* | No real patient PHI is used in this repository. |
 
 ---
@@ -193,6 +193,7 @@ Because MaaSwara handles sensitive Protected Health Information (PHI), the Provi
 - 🌍 **Data Sovereignty (Zero-Retention Voice):** For Voice interactions, raw PCM16 audio is streamed via WebSocket and processed strictly in-memory by the Edge backend. **No audio files are ever saved, stored, or written to disk**, ensuring absolute privacy for patients.
 - 🔑 **Edge Proxy Authentication:** The `/clinic` route is protected by a Next.js Middleware proxy. Unauthenticated requests never reach the server-rendering phase; they are intercepted at the edge and redirected.
 - 🔐 **Cookie Cryptography:** Sessions are managed via strict `HttpOnly`, `Secure` cookies (`maaswara_clinic_auth`) dropped by Next.js Server Actions.
+- 🛑 **API Key Origin Lockdown:** To prevent unauthorized consumption of the Gemini Live API, the API key is secured via Google Cloud Console using HTTP Referrer restrictions. It will only accept WebSocket connections originating from the official `https://maa-swara.vercel.app/*` domain.
 - 🛡️ **Row Level Security (Production):** In enterprise deployments, every doctor receives a `clinic_id` JWT. Supabase PostgreSQL RLS policies mathematically restrict `SELECT` queries so doctors can *only* see alerts geofenced to their exact hospital (`alerts.clinic_id = auth.jwt().clinic_id`).
 
 ---
@@ -228,7 +229,7 @@ Open `.env.local` and populate the following keys to unlock specific architectur
 **2. Provider Dashboard & Routing (Required for Alerts)**
 - `NEXT_PUBLIC_SUPABASE_URL`: Your Supabase project URL.
 - `NEXT_PUBLIC_SUPABASE_ANON_KEY`: Public key for realtime WebSocket subscriptions.
-- `SUPABASE_SERVICE_KEY`: Secure backend key required for PostGIS geolocation routing.
+- `SUPABASE_SERVICE_KEY`: Secure backend key required for Haversine geolocation routing.
 
 **3. Telegram 2G Intake (Optional)**
 - `TELEGRAM_BOT_TOKEN`: The token given to you by `@BotFather` on Telegram.
