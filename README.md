@@ -183,7 +183,7 @@ Building a multimodal, real-time medical app comes with brutal edge cases. Here 
 | **Database** | Supabase PostgreSQL | Relational storage for live alerts and spatial data |
 | **Realtime** | Supabase Realtime (WebSockets) | Instant push of `RED` alerts to the provider dashboard |
 | **Security** | Next.js Edge Middleware (`proxy.ts`) | Route interception and cookie-based Auth for clinics |
-| **Hosting** | Vercel | Global edge-network deployment |
+| **Hosting** | Vercel + GCP Cloud Run | Dual deployment: Vercel edge for static, Cloud Run for container |
 
 ---
 
