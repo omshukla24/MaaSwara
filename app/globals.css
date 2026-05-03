@@ -1,0 +1,238 @@
+@import "tailwindcss";
+
+/* =============================================================================
+   MaaSwara — Design System
+   Spec: §7.2, §7.3
+
+   AESTHETIC PRINCIPLE: Warm, dignified, quiet, maternal.
+   NO glassmorphism. NO purple gradients. NO "futuristic" anything.
+   This product's credibility comes from feeling human, warm, traditional
+   — like something a grandmother could trust.
+   ============================================================================= */
+
+:root {
+  /* Primary */
+  --terracotta: #C2664E;
+  --terracotta-deep: #A04E37;
+  --terracotta-light: #D4846E;
+  --emerald: #1B4332;
+  --emerald-soft: #2D5F4C;
+  --emerald-light: #3A7D64;
+
+  /* Surfaces */
+  --cream: #FAF3E7;
+  --cream-warm: #F5E9D4;
+  --ivory: #FFFCF7;
+
+  /* Accent */
+  --gold: #D4A574;
+  --gold-soft: #E8C896;
+
+  /* Semantic — Triage Severity */
+  --triage-green: #4A7C59;
+  --triage-green-bg: #E8F5EC;
+  --triage-yellow: #D4A574;
+  --triage-yellow-bg: #FFF8ED;
+  --triage-red: #B53737;
+  --triage-red-bg: #FDE8E8;
+
+  /* Neutral */
+  --ink: #2A1810;
+  --ink-soft: #5C443A;
+  --ink-muted: #8B7264;
+  --line: #E8DCC8;
+  --line-soft: #F0E8D8;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(42, 24, 16, 0.06);
+  --shadow-md: 0 4px 12px rgba(42, 24, 16, 0.08);
+  --shadow-lg: 0 8px 24px rgba(42, 24, 16, 0.12);
+
+  /* Background */
+  --background: var(--cream);
+  --foreground: var(--ink);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-terracotta: var(--terracotta);
+  --color-terracotta-deep: var(--terracotta-deep);
+  --color-terracotta-light: var(--terracotta-light);
+  --color-emerald: var(--emerald);
+  --color-emerald-soft: var(--emerald-soft);
+  --color-emerald-light: var(--emerald-light);
+  --color-cream: var(--cream);
+  --color-cream-warm: var(--cream-warm);
+  --color-ivory: var(--ivory);
+  --color-gold: var(--gold);
+  --color-gold-soft: var(--gold-soft);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-ink-muted: var(--ink-muted);
+  --color-line: var(--line);
+  --color-line-soft: var(--line-soft);
+  --color-triage-green: var(--triage-green);
+  --color-triage-green-bg: var(--triage-green-bg);
+  --color-triage-yellow: var(--triage-yellow);
+  --color-triage-yellow-bg: var(--triage-yellow-bg);
+  --color-triage-red: var(--triage-red);
+  --color-triage-red-bg: var(--triage-red-bg);
+  --font-display: var(--font-fraunces);
+  --font-body: var(--font-inter);
+  --font-mono: var(--font-jetbrains-mono);
+}
+
+/* =============================================================================
+   BASE STYLES
+   ============================================================================= */
+
+body {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--font-body), 'Inter', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* =============================================================================
+   TYPOGRAPHY
+   ============================================================================= */
+
+.font-display {
+  font-family: var(--font-display), 'Fraunces', Georgia, serif;
+}
+
+.font-body {
+  font-family: var(--font-body), 'Inter', system-ui, sans-serif;
+}
+
+.font-mono {
+  font-family: var(--font-mono), 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+/* =============================================================================
+   WARM GRADIENT — subtle bottom fade on landing
+   ============================================================================= */
+
+.warm-gradient {
+  background: linear-gradient(
+    180deg,
+    var(--cream) 0%,
+    var(--cream-warm) 100%
+  );
+}
+
+/* =============================================================================
+   TRIAGE SEVERITY ANIMATIONS
+   ============================================================================= */
+
+@keyframes gentle-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.85; }
+}
+
+.triage-pulse {
+  animation: gentle-pulse 2s ease-in-out infinite;
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.3s ease-out;
+}
+
+/* =============================================================================
+   CALL BUTTON PULSE
+   ============================================================================= */
+
+@keyframes call-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(194, 102, 78, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 16px rgba(194, 102, 78, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(194, 102, 78, 0);
+  }
+}
+
+.pulse-terracotta {
+  animation: call-pulse 2s ease-in-out infinite;
+}
+
+/* =============================================================================
+   CHAT BUBBLE STYLES
+   ============================================================================= */
+
+.chat-bubble-bot {
+  background: var(--cream-warm);
+  border-left: 3px solid var(--terracotta);
+  border-radius: 2px 16px 16px 16px;
+}
+
+.chat-bubble-user {
+  background: var(--ivory);
+  border-right: 3px solid var(--emerald-soft);
+  border-radius: 16px 2px 16px 16px;
+}
+
+/* =============================================================================
+   TYPING INDICATOR
+   ============================================================================= */
+
+@keyframes typing-dot {
+  0%, 60%, 100% {
+    opacity: 0.3;
+    transform: translateY(0);
+  }
+  30% {
+    opacity: 1;
+    transform: translateY(-4px);
+  }
+}
+
+.typing-dot:nth-child(1) { animation: typing-dot 1.4s ease-in-out infinite; }
+.typing-dot:nth-child(2) { animation: typing-dot 1.4s ease-in-out 0.2s infinite; }
+.typing-dot:nth-child(3) { animation: typing-dot 1.4s ease-in-out 0.4s infinite; }
+
+/* =============================================================================
+   SCROLLBAR STYLING (warm tone)
+   ============================================================================= */
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--cream);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ink-muted);
+}
+
+/* =============================================================================
+   FOCUS STYLES (warm, accessible)
+   ============================================================================= */
+
+:focus-visible {
+  outline: 2px solid var(--terracotta);
+  outline-offset: 2px;
+  border-radius: 4px;
+}

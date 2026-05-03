@@ -1,0 +1,82 @@
+[
+  {
+    "id": "clinic-001",
+    "name": "Asha Maternity Center",
+    "lat": 25.6093,
+    "lng": 85.1376,
+    "address": "Kankarbagh, Patna, Bihar 800020",
+    "phone": "+91-612-2345678",
+    "languages": ["hi", "bho"],
+    "active": true
+  },
+  {
+    "id": "clinic-002",
+    "name": "Didi Health Clinic",
+    "lat": 25.4358,
+    "lng": 86.1353,
+    "address": "Munger, Bihar 811201",
+    "phone": "+91-631-2234567",
+    "languages": ["hi", "bho"],
+    "active": true
+  },
+  {
+    "id": "clinic-003",
+    "name": "Ujala Women's Hospital",
+    "lat": 26.8467,
+    "lng": 80.9462,
+    "address": "Lucknow, Uttar Pradesh 226001",
+    "phone": "+91-522-4567890",
+    "languages": ["hi", "en"],
+    "active": true
+  },
+  {
+    "id": "clinic-004",
+    "name": "Amani Maternal Health Centre",
+    "lat": -6.7924,
+    "lng": 39.2083,
+    "address": "Ilala District, Dar es Salaam, Tanzania",
+    "phone": "+255-22-2345678",
+    "languages": ["sw", "en"],
+    "active": true
+  },
+  {
+    "id": "clinic-005",
+    "name": "Tumaini Clinic",
+    "lat": -1.2921,
+    "lng": 36.8219,
+    "address": "Kibera, Nairobi, Kenya",
+    "phone": "+254-20-3456789",
+    "languages": ["sw", "en"],
+    "active": true
+  },
+  {
+    "id": "clinic-006",
+    "name": "Iya Wa Maternity Home",
+    "lat": 6.5244,
+    "lng": 3.3792,
+    "address": "Surulere, Lagos, Nigeria",
+    "phone": "+234-1-4567890",
+    "languages": ["yo", "en"],
+    "active": true
+  },
+  {
+    "id": "clinic-007",
+    "name": "Uwargida Health Centre",
+    "lat": 12.0022,
+    "lng": 8.5920,
+    "address": "Nassarawa, Kano, Nigeria",
+    "phone": "+234-64-2345678",
+    "languages": ["ha", "en"],
+    "active": true
+  },
+  {
+    "id": "clinic-008",
+    "name": "Saheli Community Clinic",
+    "lat": 25.3176,
+    "lng": 82.9739,
+    "address": "Varanasi, Uttar Pradesh 221001",
+    "phone": "+91-542-2345678",
+    "languages": ["hi", "bho", "en"],
+    "active": true
+  }
+]
