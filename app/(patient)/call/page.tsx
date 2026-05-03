@@ -138,8 +138,13 @@ export default function CallPage() {
     }
   };
 
+  // Prevent orb from reacting to mic if mic is muted
+  const effectiveAudioLevel = isMicMuted ? 0 : audioLevel;
+  
   // Base size + audio level scaling
-  const orbScale = 1 + (isSpeaking ? audioLevel * 5 : audioLevel * 8);
+  // Cap the scale at 1.5 to prevent it from growing too large and covering text
+  const calculatedScale = 1 + (isSpeaking ? 0.1 + (effectiveAudioLevel * 2) : effectiveAudioLevel * 5);
+  const orbScale = Math.min(calculatedScale, 1.5);
 
   return (
     <div
