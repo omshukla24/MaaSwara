@@ -34,6 +34,18 @@ MaaSwara is a full-stack, AI-powered maternal triage command center that:
 
 ---
 
+## 🎯 What It Does [Intent ➡️ Action Mapping]
+MaaSwara is continuously evaluating the patient's input. Here is exactly how the Universal Triage Engine handles real-world scenarios across different languages:
+
+| Patient Input (Language) | AI Processing | Triage Action |
+|---|---|---|
+| *"Mujhe thoda dard hai, par theek lag raha hai"* (Hindi) | Gemini detects normal mild cramping, no danger signs. | **GREEN** - Responds with empathetic reassurance and basic care advice. |
+| *"I have a very bad headache and my vision is blurry"* (English) | Scanner detects "headache" and "vision" (WHO Signs D6, D8). | **RED** - Overrides LLM. Instantly alerts nearest clinic dashboard. |
+| *"Mo n ni orififo nla"* (Yoruba) | Gemini translates to severe headache. Scanner verifies danger intent. | **RED** - Dispatches alert to provider in Lagos. |
+| *"Mtoto hachezi tumboni leo"* (Swahili) | Scanner detects decreased fetal movement (WHO Sign D10). | **YELLOW** - Flags for follow-up, advises immediate clinic visit. |
+
+---
+
 ## 🏗️ Architecture
 
 ```mermaid
@@ -135,7 +147,24 @@ If the mother says "bleeding heavily" (Hindi: *bahut khoon*), the Deterministic 
 ### 🗺️ Geolocation & PostGIS Clinic Routing
 When a `RED` alert fires, the engine captures the patient's browser coordinates. Using Supabase PostGIS, the backend runs a spatial Haversine distance query against a database of registered partner clinics, instantly assigning the alert to the nearest facility (`clinic_id`) to guarantee rapid response times. 
 
-**Global Seed Data:** Our PostGIS routing database is pre-seeded with synthetic partner clinics spanning **India (Patna), East Africa (Nairobi), and West Africa (Lagos)**, dynamically matching patients across 6 distinct language regions to their nearest local facility.
+### 📊 Data Sources & Clinical Authority
+MaaSwara's medical logic is not improvised; it is strictly grounded in established maternal health protocols:
+
+| Asset | Source | Note |
+|---|---|---|
+| **Clinical Triage Logic** | *WHO Recommendations on Antenatal Care (2022)* | Hardcoded directly into the Gemini System Prompt context window. |
+| **Danger Signs (11 Triggers)** | *JHPIEGO Maternal Health Manual* | 11 deterministic regex triggers that mathematically override the LLM. |
+| **Partner Clinics** | *Synthetic PostGIS Seed Data* | Geofenced coordinates covering India, East Africa, and West Africa. |
+| **Patient Record/Alerts** | *Synthetic FHIR-compliant Data* | No real patient PHI is used in this repository. |
+
+---
+
+## ⚔️ Technical Challenges Conquered
+Building a multimodal, real-time medical app comes with brutal edge cases. Here is how we bypassed them:
+
+1. **The Telegram Markdown Crash:** Gemini naturally outputs markdown (e.g., `**bold**`). Telegram's strict Markdown parser violently rejects this and throws `400 Bad Request` errors, causing silent delivery failures for emergency alerts. We had to strip the `parse_mode` requirement from our custom Telegram API client entirely, forcing raw text delivery to guarantee 100% reliability for rural mothers.
+2. **Web Audio API Suspended Contexts:** Browsers strictly enforce auto-play policies. When building the Voice Call feature, the `AudioContext` would initialize in a "suspended" state, causing silent failures when Gemini tried to speak. We built an explicit user-interaction interceptor that forces `audioContext.resume()` upon the first tap of the pulsing orb, before initializing the WebSocket.
+3. **Next.js Hydration Mismatches:** Browser extensions (like Grammarly) injecting DOM elements into the `<body>` caused catastrophic React hydration failures on the production build. We suppressed hydration warnings on the root layout to maintain absolute stability across diverse user browser environments.
 
 ---
 
