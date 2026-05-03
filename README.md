@@ -206,4 +206,4 @@ MaaSwara/
 🌌
 *"Listen to the mother. Override the hallucination. Save the life."*
 
-**Built for the 2026 Hackathon Season.**
+**MIT License**
