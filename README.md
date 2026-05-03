@@ -223,6 +223,14 @@ Visit `http://localhost:3000` — the web app will load. Visit `http://localhost
 
 ---
 
+## 🚀 What's Next
+While MaaSwara currently serves as a highly functional triage bridge, our vision for scale includes:
+1. **EHR / DHIS2 Integration:** Pushing FHIR-compliant triage data directly into **DHIS2**, the national health database standard used in 73 developing countries.
+2. **Biometric Edge Integration:** Integrating with low-cost, Bluetooth-enabled maternal blood pressure cuffs to stream objective biometric data alongside the mother's voice.
+3. **Automated Dispatch APIs:** Moving beyond clinical dashboards to API-level integration with local ambulance networks and ride-sharing systems (like Uber Health) for automated emergency dispatch in rural areas.
+
+---
+
 ## 📂 Project Structure
 ```text
 MaaSwara/
