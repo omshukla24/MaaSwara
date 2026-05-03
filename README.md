@@ -214,12 +214,30 @@ npm install
 
 # Configure environment variables
 cp .env.example .env.local
-# Add your GEMINI_API_KEY and Supabase credentials to .env.local
+```
 
+### Environment Configuration
+Open `.env.local` and populate the following keys to unlock specific architecture modules:
+
+**1. Triage Engine (Required)**
+- `GEMINI_API_KEY`: Required for the core medical triage, text chat, and live voice engine. (Get it free at [Google AI Studio](https://aistudio.google.com/))
+
+**2. Provider Dashboard & Routing (Required for Alerts)**
+- `NEXT_PUBLIC_SUPABASE_URL`: Your Supabase project URL.
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`: Public key for realtime WebSocket subscriptions.
+- `SUPABASE_SERVICE_KEY`: Secure backend key required for PostGIS geolocation routing.
+
+**3. Telegram 2G Intake (Optional)**
+- `TELEGRAM_BOT_TOKEN`: The token given to you by `@BotFather` on Telegram.
+- `NEXT_PUBLIC_APP_URL`: Set to your ngrok URL or Vercel production URL (e.g., `https://maa-swara.vercel.app`) so the webhook can register itself automatically.
+
+### Running the App
+```bash
 # Start development server
 npm run dev
 ```
-Visit `http://localhost:3000` — the web app will load. Visit `http://localhost:3000/clinic` to view the dashboard (Password: `maaswara2026`).
+- **Patient Interface:** Visit `http://localhost:3000`
+- **Clinic Dashboard:** Visit `http://localhost:3000/clinic` (Demo Password: `maaswara2026`)
 
 ---
 
