@@ -246,6 +246,7 @@ While MaaSwara currently serves as a highly functional triage bridge, our vision
 1. **EHR / DHIS2 Integration:** Pushing FHIR-compliant triage data directly into **DHIS2**, the national health database standard used in 73 developing countries.
 2. **Biometric Edge Integration:** Integrating with low-cost, Bluetooth-enabled maternal blood pressure cuffs to stream objective biometric data alongside the mother's voice.
 3. **Automated Dispatch APIs:** Moving beyond clinical dashboards to API-level integration with local ambulance networks and ride-sharing systems (like Uber Health) for automated emergency dispatch in rural areas.
+4. **WhatsApp Integration:** Building out a Twilio webhook adapter so mothers can interact with the exact same multimodal triage engine through WhatsApp, the most ubiquitous messaging app in the developing world.
 
 ---
 
