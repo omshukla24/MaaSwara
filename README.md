@@ -257,6 +257,11 @@ MaaSwara/
 
 ---
 
+## 🌍 Alignment & Support
+This project was built for the **GNEC Hackathon** in direct support of **UN Sustainable Development Goal (SDG) 3.1**, which aims to reduce the global maternal mortality ratio. We acknowledge the civic and global organizations hosting and sponsoring this initiative, including the Global NGO Executive Committee (GNEC), World Assembly of Youth (WAY), and participating academic and international institutions.
+
+---
+
 🌌
 *"Listen to the mother. Override the hallucination. Save the life."*
 
