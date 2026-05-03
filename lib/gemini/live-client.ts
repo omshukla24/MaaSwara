@@ -30,6 +30,7 @@ export class GeminiLiveClient {
   // Audio playback queue
   private nextPlayTime = 0;
   private isMuted = false;
+  private isMicMuted = false;
   
   private options: LiveClientOptions;
   
@@ -115,6 +116,14 @@ export class GeminiLiveClient {
       this.clearPlayback();
     }
     return this.isMuted;
+  }
+
+  /**
+   * Toggle only the microphone (user input) mute state.
+   */
+  toggleMicMute(): boolean {
+    this.isMicMuted = !this.isMicMuted;
+    return this.isMicMuted;
   }
 
   /**
@@ -246,7 +255,7 @@ export class GeminiLiveClient {
         // Encode to base64 and send
         const base64 = this.arrayBufferToBase64(pcmBuffer);
         
-        if (this.ws && this.ws.readyState === WebSocket.OPEN && !this.isMuted) {
+        if (this.ws && this.ws.readyState === WebSocket.OPEN && !this.isMuted && !this.isMicMuted) {
           this.ws.send(JSON.stringify({
             realtimeInput: {
               mediaChunks: [{

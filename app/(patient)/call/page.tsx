@@ -21,6 +21,7 @@ export default function CallPage() {
   const [transcript, setTranscript] = useState<string>('');
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
+  const [isMicMuted, setIsMicMuted] = useState(false);
   const [currentTriage, setCurrentTriage] = useState<TriageResult | null>(null);
   const [showTriageModal, setShowTriageModal] = useState(false);
 
@@ -95,6 +96,7 @@ export default function CallPage() {
     setClientState('disconnected');
     setIsSpeaking(false);
     setIsMuted(false);
+    setIsMicMuted(false);
     setAudioLevel(0);
   };
 
@@ -102,6 +104,13 @@ export default function CallPage() {
     if (clientRef.current) {
       const muted = clientRef.current.toggleMute();
       setIsMuted(muted);
+    }
+  };
+
+  const toggleMicMute = () => {
+    if (clientRef.current) {
+      const micMuted = clientRef.current.toggleMicMute();
+      setIsMicMuted(micMuted);
     }
   };
 
@@ -236,8 +245,8 @@ export default function CallPage() {
           </motion.button>
         </div>
 
-        {/* Status Text */}
-        <div className="h-8 text-center">
+        {/* Status Text & Mic Control */}
+        <div className="h-16 text-center flex flex-col items-center gap-3">
           {clientState === 'connected' && (
             <p className="font-display font-medium text-lg" style={{ color: 'var(--ink)' }}>
               {isMuted ? 'Call paused' : isSpeaking ? 'MaaSwara is speaking...' : 'Listening...'}
@@ -245,6 +254,38 @@ export default function CallPage() {
           )}
           {clientState === 'error' && (
             <p className="font-medium text-red-500">Connection error. Please try again.</p>
+          )}
+
+          {clientState === 'connected' && !isMuted && (
+            <button
+              onClick={toggleMicMute}
+              className={`flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                isMicMuted 
+                  ? 'bg-red-100 text-red-600 border border-red-200' 
+                  : 'bg-slate-100 text-slate-600 border border-slate-200 hover:bg-slate-200'
+              }`}
+            >
+              {isMicMuted ? (
+                <>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="1" x2="23" y1="1" y2="23" />
+                    <path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6" />
+                    <path d="M17 16.95A7 7 0 0 1 5 12v-2m14 0v2a7 7 0 0 1-.11 1.23" />
+                    <line x1="12" x2="12" y1="19" y2="22" />
+                  </svg>
+                  Mic Muted
+                </>
+              ) : (
+                <>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
+                    <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+                    <line x1="12" x2="12" y1="19" y2="22" />
+                  </svg>
+                  Mute Mic
+                </>
+              )}
+            </button>
           )}
         </div>
 
