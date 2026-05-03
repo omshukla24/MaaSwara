@@ -60,11 +60,26 @@ export const useChatStore = create<ChatState>((set, get) => ({
     });
 
     try {
+      // Attempt to get the user's real location for clinic routing
+      let location: { lat: number; lng: number } | undefined;
+      try {
+        const pos = await new Promise<GeolocationPosition>((resolve, reject) =>
+          navigator.geolocation.getCurrentPosition(resolve, reject, {
+            timeout: 5000,
+            maximumAge: 60000,
+          })
+        );
+        location = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+      } catch {
+        // Geolocation denied or unavailable — continue without it
+      }
+
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           messages: updatedMessages,
+          location,
         }),
       });
 

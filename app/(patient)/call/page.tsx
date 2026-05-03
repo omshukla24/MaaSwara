@@ -117,6 +117,22 @@ export default function CallPage() {
   const triggerAlert = async (triage: TriageResult, fullTranscript: string) => {
     setShowTriageModal(true);
     try {
+      // Attempt to get the user's real location for clinic routing
+      let lat: number | null = null;
+      let lng: number | null = null;
+      try {
+        const pos = await new Promise<GeolocationPosition>((resolve, reject) =>
+          navigator.geolocation.getCurrentPosition(resolve, reject, {
+            timeout: 5000,
+            maximumAge: 60000,
+          })
+        );
+        lat = pos.coords.latitude;
+        lng = pos.coords.longitude;
+      } catch {
+        // Geolocation denied or unavailable — continue without it
+      }
+
       await fetch('/api/alerts', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -126,8 +142,8 @@ export default function CallPage() {
           language: triage.language,
           weeks_pregnant: triage.weeks_pregnant,
           summary_en: triage.summary_en,
-          lat: null, // Would fetch location in full impl
-          lng: null,
+          lat,
+          lng,
           status: 'active',
           source: 'web-voice',
           transcript_excerpt: fullTranscript.slice(-500),

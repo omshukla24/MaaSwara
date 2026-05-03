@@ -5,7 +5,7 @@ Powered by Google Gemini 2.5 Flash Multimodal Intelligence
 
 [Live Patient Web App](https://maa-swara.vercel.app) · [Telegram Bot @MaaSwarabot](https://t.me/MaaSwarabot) · [Live Provider Dashboard](https://maa-swara.vercel.app/clinic) *(Password: `maaswara2026`)*
 
-`Next.js 14` `React` `Gemini Live API` `WebAudio` `Supabase` `PostGIS` `TypeScript` `CSS3` `Telegram Bot API`
+`Next.js 16` `React 19` `Gemini Live API` `WebAudio` `Supabase` `Haversine Routing` `TypeScript` `CSS3` `Telegram Bot API`
 
 ---
 
@@ -29,7 +29,7 @@ MaaSwara is a full-stack, AI-powered maternal triage command center that:
 - 🧠 **Translates & Analyzes** across 100+ native languages (Hindi, Bengali, Tamil, Swahili, Yoruba, Hausa, Zulu, Amharic, and many more).
 - 🔴 **Triages** symptoms into precise severity tiers (`GREEN`, `YELLOW`, `RED`).
 - 🛡️ **Overrides** LLM hallucinations mathematically using a hardcoded deterministic keyword safety net.
-- 🗺️ **Routes** `RED` alerts to the nearest geolocated partner clinic via Supabase PostGIS spatial queries.
+- 🗺️ **Routes** `RED` alerts to the nearest geolocated partner clinic via Haversine spatial distance calculations.
 - 🛠️ **Visualizes** live emergencies on a secure, glassmorphic Provider Dashboard.
 
 ---
@@ -147,8 +147,8 @@ If the mother says "bleeding heavily" (Hindi: *bahut khoon*), the Deterministic 
 **100-Language Safety Net via `summary_en` Proxy Scanning**  
 The Deterministic Scanner achieves 100+ language coverage through an elegant proxy technique: Gemini always outputs a `summary_en` field — an English translation of the patient's symptoms, regardless of the input language. The scanner runs its English keyword dictionary against this `summary_en` field, effectively inheriting Gemini's full multilingual fluency without needing regex dictionaries for every language.
 
-### 🗺️ Geolocation & PostGIS Clinic Routing
-When a `RED` alert fires, the engine captures the patient's browser coordinates. Using Supabase PostGIS, the backend runs a spatial Haversine distance query against a database of registered partner clinics, instantly assigning the alert to the nearest facility (`clinic_id`) to guarantee rapid response times. 
+### 🗺️ Geolocation & Haversine Clinic Routing
+When a `RED` alert fires, the engine captures the patient's browser coordinates via `navigator.geolocation`. Using Haversine distance calculations, the backend computes the great-circle distance to every registered partner clinic and assigns the alert to the nearest facility (`clinic_id`) to guarantee rapid response times.
 
 ### 📊 Data Sources & Clinical Authority
 MaaSwara's medical logic is not improvised; it is strictly grounded in established maternal health protocols:
@@ -175,7 +175,7 @@ Building a multimodal, real-time medical app comes with brutal edge cases. Here 
 
 | Layer | Technology | Purpose |
 |---|---|---|
-| **Frontend** | React 19 + Next.js 14 App Router | UI framework, SSR, and build system |
+| **Frontend** | React 19 + Next.js 16 App Router | UI framework, SSR, and build system |
 | **Styling** | Vanilla CSS3 Modules | Glassmorphism, terracotta color themes, custom animations |
 | **AI Backend** | Gemini 2.5 Flash (`@google/genai`) | Clinical LLM parsing and conversational synthesis |
 | **Voice Capture** | Web Audio API (`AudioWorkletNode`) | Raw PCM16 audio recording at 16kHz for Live API |
