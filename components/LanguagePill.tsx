@@ -14,11 +14,15 @@ interface LanguagePillProps {
 
 export default function LanguagePill({ language }: LanguagePillProps) {
   const langInfo = SUPPORTED_LANGUAGES.find((l) => l.code === language);
+  
+  // If it's a known top-6 language, show native name. Otherwise show auto-detect or dynamic code.
+  const displayText = langInfo 
+    ? langInfo.nativeName 
+    : (language ? `Language: ${language.toUpperCase()}` : 'Auto-Detect: 100+ Languages');
 
   return (
     <AnimatePresence>
-      {langInfo && (
-        <motion.div
+      <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.9 }}
@@ -30,9 +34,8 @@ export default function LanguagePill({ language }: LanguagePillProps) {
           }}
         >
           <span className="text-xs">🌐</span>
-          <span>{langInfo.nativeName}</span>
+          <span>{displayText}</span>
         </motion.div>
-      )}
     </AnimatePresence>
   );
 }

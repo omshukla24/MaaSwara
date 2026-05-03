@@ -107,7 +107,10 @@ export function applyDeterministicOverride(
   };
 
   // Run the deterministic safety check
-  const override = forceSeverityCheck(transcript);
+  // HACKATHON OPTIMIZATION: We feed Gemini's English translation (summary_en) 
+  // into the scanner. This grants the English regex safety net instant 100+ language support.
+  const safetyNetPayload = `${transcript} ${baseResult.summary_en}`;
+  const override = forceSeverityCheck(safetyNetPayload);
 
   if (override && shouldOverride(baseResult.severity, override.severity)) {
     console.log(
