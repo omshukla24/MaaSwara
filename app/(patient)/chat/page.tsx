@@ -124,7 +124,7 @@ export default function ChatPage() {
                 </p>
               </div>
               <div className="flex flex-wrap justify-center gap-2 mt-4">
-                {['हिन्दी', 'English', 'Kiswahili', 'Yorùbá', 'Hausa', 'भोजपुरी'].map(
+                {['हिन्दी', 'English', 'Kiswahili', 'বাংলা', 'Yorùbá', 'தமிழ்', 'Hausa', 'isiZulu', 'اردو', 'አማርኛ', 'भोजपुरी', '100+ more...'].map(
                   (lang) => (
                     <span
                       key={lang}

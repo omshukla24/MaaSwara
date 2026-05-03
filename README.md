@@ -26,7 +26,7 @@ What if an AI could listen to a mother in her native tongue, cross-reference her
 MaaSwara is a full-stack, AI-powered maternal triage command center that:
 
 - 🎙️ **Listens** to raw audio input via immersive Web Audio APIs or extreme low-bandwidth Telegram texts.
-- 🧠 **Translates & Analyzes** across 100+ native languages across the Global South.
+- 🧠 **Translates & Analyzes** across 100+ native languages (Hindi, Bengali, Tamil, Swahili, Yoruba, Hausa, Zulu, Amharic, and many more).
 - 🔴 **Triages** symptoms into precise severity tiers (`GREEN`, `YELLOW`, `RED`).
 - 🛡️ **Overrides** LLM hallucinations mathematically using a hardcoded deterministic keyword safety net.
 - 🗺️ **Routes** `RED` alerts to the nearest geolocated partner clinic via Supabase PostGIS spatial queries.
@@ -77,7 +77,7 @@ graph TD
         G[Input Normalization & <br/>Transcript Assembly]:::ai
         
         H[Gemini 2.5 Flash <br/>Clinical Assessment]:::ai
-        I[Deterministic Scanner <br/>6-Language Safety Net]:::ai
+        I[Deterministic Scanner <br/>100+ Language Safety Net]:::ai
         
         J[Severity Resolution <br/>Mathematical Override]:::ai
         
@@ -137,15 +137,15 @@ Large Language Models are incredible at empathy and translation, but they halluc
 | Agent / Layer | Role | Input | Output |
 |---|---|---|---|
 | 🧠 **Gemini 2.5 Flash** | Empathetic conversationalist & primary clinical classifier | Raw transcript | JSON: `{ severity, signs_detected }` |
-| 🛡️ **Deterministic Scanner** | Hardcoded, regex-based medical safety net | Raw transcript + LLM English Proxy (`summary_en`) | Boolean trigger |
-
-**100-Language Deterministic Scaling Hack:**  
-We wanted deterministic safety without writing regex dictionaries for 100 languages. When Gemini processes a foreign language (e.g., Zulu), it generates an English translation (`summary_en`). We feed that English proxy *back into our English deterministic scanner*. If the regex catches "severe headache" in the proxy, the system immediately overrides the LLM to `RED`—granting the safety net instant 100-language support.
+| 🛡️ **Deterministic Scanner** | Hardcoded, regex-based medical safety net | Raw transcript + LLM English summary | Boolean trigger |
 
 **Mathematical Override Logic**  
 If the mother says "bleeding heavily" (Hindi: *bahut khoon*), the Deterministic Scanner flags it. Even if Gemini mistakenly classifies the bleeding as `GREEN`, the override formula kicks in:  
 `Final Severity = max(LLM_Severity, Deterministic_Override)`  
 *The patient is forced to `RED` and an ambulance is called.*
+
+**100-Language Safety Net via `summary_en` Proxy Scanning**  
+The Deterministic Scanner achieves 100+ language coverage through an elegant proxy technique: Gemini always outputs a `summary_en` field — an English translation of the patient's symptoms, regardless of the input language. The scanner runs its English keyword dictionary against this `summary_en` field, effectively inheriting Gemini's full multilingual fluency without needing regex dictionaries for every language.
 
 ### 🗺️ Geolocation & PostGIS Clinic Routing
 When a `RED` alert fires, the engine captures the patient's browser coordinates. Using Supabase PostGIS, the backend runs a spatial Haversine distance query against a database of registered partner clinics, instantly assigning the alert to the nearest facility (`clinic_id`) to guarantee rapid response times. 

@@ -2,8 +2,8 @@
 // MaaSwara — Shared TypeScript Types
 // =============================================================================
 
-/** Supported language codes */
-export type SupportedLanguage = 'en' | 'hi' | 'bho' | 'sw' | 'yo' | 'ha';
+/** Supported language codes — core 6 + extended 100+ via Gemini auto-detect */
+export type SupportedLanguage = string;
 
 /** Triage severity levels */
 export type Severity = 'GREEN' | 'YELLOW' | 'RED';
@@ -115,4 +115,21 @@ export const SUPPORTED_LANGUAGES: LanguageInfo[] = [
   { code: 'yo', name: 'Yoruba', nativeName: 'Yorùbá' },
   { code: 'ha', name: 'Hausa', nativeName: 'Hausa' },
   { code: 'bho', name: 'Bhojpuri', nativeName: 'भोजपुरी' },
+  { code: 'bn', name: 'Bengali', nativeName: 'বাংলা' },
+  { code: 'ta', name: 'Tamil', nativeName: 'தமிழ்' },
+  { code: 'te', name: 'Telugu', nativeName: 'తెలుగు' },
+  { code: 'mr', name: 'Marathi', nativeName: 'मराठी' },
+  { code: 'gu', name: 'Gujarati', nativeName: 'ગુજરાતી' },
+  { code: 'kn', name: 'Kannada', nativeName: 'ಕನ್ನಡ' },
+  { code: 'ml', name: 'Malayalam', nativeName: 'മലയാളം' },
+  { code: 'pa', name: 'Punjabi', nativeName: 'ਪੰਜਾਬੀ' },
+  { code: 'or', name: 'Odia', nativeName: 'ଓଡ଼ିଆ' },
+  { code: 'ur', name: 'Urdu', nativeName: 'اردو' },
+  { code: 'ne', name: 'Nepali', nativeName: 'नेपाली' },
+  { code: 'zu', name: 'Zulu', nativeName: 'isiZulu' },
+  { code: 'am', name: 'Amharic', nativeName: 'አማርኛ' },
+  { code: 'ig', name: 'Igbo', nativeName: 'Igbo' },
+  { code: 'so', name: 'Somali', nativeName: 'Soomaali' },
+  { code: 'rw', name: 'Kinyarwanda', nativeName: 'Ikinyarwanda' },
+  { code: 'mg', name: 'Malagasy', nativeName: 'Malagasy' },
 ];

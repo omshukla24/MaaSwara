@@ -49,13 +49,13 @@ export function parseTriageResponse(rawResponse: string): TriageResult | null {
  */
 function validateTriageResult(parsed: Record<string, unknown>): TriageResult | null {
   const validSeverities: Severity[] = ['GREEN', 'YELLOW', 'RED'];
-  const validLanguages: SupportedLanguage[] = ['en', 'hi', 'bho', 'sw', 'yo', 'ha'];
 
   const severity = parsed.severity as string;
   if (!validSeverities.includes(severity as Severity)) {
     return null;
   }
 
+  // Accept any language code from Gemini (100+ languages supported)
   const language = (parsed.language as string) || 'en';
   const signsDetected = Array.isArray(parsed.signs_detected)
     ? (parsed.signs_detected as string[]).filter((s): s is DangerSignId =>
@@ -66,9 +66,7 @@ function validateTriageResult(parsed: Record<string, unknown>): TriageResult | n
   return {
     severity: severity as Severity,
     signs_detected: signsDetected,
-    language: validLanguages.includes(language as SupportedLanguage)
-      ? (language as SupportedLanguage)
-      : 'en',
+    language: language,
     weeks_pregnant:
       typeof parsed.weeks_pregnant === 'number' ? parsed.weeks_pregnant : null,
     needs_alert: parsed.needs_alert === true || severity === 'RED',
@@ -106,24 +104,40 @@ export function applyDeterministicOverride(
     summary_en: 'Unable to parse triage result from model response',
   };
 
-  // Run the deterministic safety check
-  // HACKATHON OPTIMIZATION: We feed Gemini's English translation (summary_en) 
-  // into the scanner. This grants the English regex safety net instant 100+ language support.
-  const safetyNetPayload = `${transcript} ${baseResult.summary_en}`;
-  const override = forceSeverityCheck(safetyNetPayload);
+  // Run the deterministic safety check against the raw transcript
+  const override = forceSeverityCheck(transcript);
 
-  if (override && shouldOverride(baseResult.severity, override.severity)) {
+  // 100-LANGUAGE OPTIMIZATION: Also scan the LLM's English summary.
+  // Gemini translates any language into summary_en, so scanning it
+  // with our English keyword dictionary gives us 100+ language
+  // safety coverage without needing regex for every language.
+  const summaryOverride = baseResult.summary_en
+    ? forceSeverityCheck(baseResult.summary_en)
+    : null;
+
+  // Pick whichever override is higher severity
+  const effectiveOverride = (() => {
+    if (override && summaryOverride) {
+      const priority: Record<string, number> = { GREEN: 0, YELLOW: 1, RED: 2 };
+      return priority[override.severity] >= priority[summaryOverride.severity]
+        ? override
+        : summaryOverride;
+    }
+    return override || summaryOverride;
+  })();
+
+  if (effectiveOverride && shouldOverride(baseResult.severity, effectiveOverride.severity)) {
     console.log(
-      `[MaaSwara Safety Net] ⚠️ OVERRIDING severity: ${baseResult.severity} → ${override.severity}`,
-      `| Matched keywords: ${override.matched_keywords.join(', ')}`,
-      `| Language: ${override.source_language}`
+      `[MaaSwara Safety Net] ⚠️ OVERRIDING severity: ${baseResult.severity} → ${effectiveOverride.severity}`,
+      `| Matched keywords: ${effectiveOverride.matched_keywords.join(', ')}`,
+      `| Language: ${effectiveOverride.source_language}`
     );
 
     return {
       ...baseResult,
-      severity: override.severity,
-      needs_alert: override.severity === 'RED' ? true : baseResult.needs_alert,
-      summary_en: baseResult.summary_en + ` [SAFETY OVERRIDE: ${override.matched_keywords.join(', ')}]`,
+      severity: effectiveOverride.severity,
+      needs_alert: effectiveOverride.severity === 'RED' ? true : baseResult.needs_alert,
+      summary_en: baseResult.summary_en + ` [SAFETY OVERRIDE: ${effectiveOverride.matched_keywords.join(', ')}]`,
     };
   }
 
