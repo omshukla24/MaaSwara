@@ -34,6 +34,7 @@ function isInternalOrigin(request: NextRequest): boolean {
     vercelUrl,
     'http://localhost:3000',
     'https://maa-swara.vercel.app',
+    'https://maaswara-736605982316.asia-south1.run.app'
   ].filter(Boolean);
 
   return allowedOrigins.some(
